@@ -1,4 +1,6 @@
 ﻿import string
+from time import *
+from random import *
 # +----------------------Save AND Load DATA--------------------------------+
 # +----------------------------------------------------------------------+
 def UserIntoString(user):
@@ -10,10 +12,10 @@ def UserIntoString(user):
     return return_string
 
 def SaveUserData(user):
+    user_data.append(user)
     user_args_data = UserIntoString(user)
     with open(file="user_data.txt", mode="a", encoding="utf-8") as f:
         f.write(f"{user_args_data};")
-    user_data = LoadUserData()
 
 def LoadUserData():
     temp_user_data = []
@@ -30,6 +32,13 @@ def LoadUserData():
                 else:
                     temp_user_data.pop(len(temp_user_data) - 1)
     return temp_user_data
+
+def PushCurrentUserData():
+    for user in user_data:
+        with open(file="user_data.txt", mode="w", encoding="utf-8") as f:
+            f.write("")
+        SaveUserData(user)
+    user_data = LoadUserData()
 # +----------------------------------------------------------------------+
 # +----------------------------------------------------------------------+
 
