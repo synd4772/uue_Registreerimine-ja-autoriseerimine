@@ -1,6 +1,6 @@
 ﻿import string
 from time import *
-from random import *
+from random import * 
 # +----------------------Save AND Load DATA--------------------------------+
 # +----------------------------------------------------------------------+
 def UserIntoString(user):
