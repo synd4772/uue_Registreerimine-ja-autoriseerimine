@@ -1,50 +1,57 @@
-﻿import string
+import string
 from time import *
-from random import * 
+from random import *
+from EmailData import *
+
 # +----------------------Save AND Load DATA--------------------------------+
 # +----------------------------------------------------------------------+
+user_data = list()
+
 def UserIntoString(user):
     return_string = ""
     arv = 0
-    for index, data in user[0].items():
+    for index, data in user.items():
         arv += 1
-        return_string += index + ":" + str(data) + ("," if len(user[0]) != arv else "")
+        return_string += index + ":" + str(data) + ("," if len(user) != arv else "")
     return return_string
 
-def SaveUserData(user):
-    user_data.append(user)
+def ClearUserData():
+    with open(file="user_data.txt", mode="w", encoding="utf-8") as f:
+        f.write('')
+
+def SaveUserData(user, save_locally = False):
+    if save_locally is True:
+        user_data.append(user)
     user_args_data = UserIntoString(user)
     with open(file="user_data.txt", mode="a", encoding="utf-8") as f:
         f.write(f"{user_args_data};")
 
 def LoadUserData():
-    temp_user_data = []
     with open(file="user_data.txt", mode="r+", encoding="utf-8") as f:
-        unformated_users = f.readline().split(";")
-        for unformated_data in unformated_users:
-            temp_user_data.append({})
-            new_user_index_list = len(temp_user_data) - 1
-            formated_datas = unformated_data.split(",")
-            for i in formated_datas:
-                if len(i) != 0:
-                    formated_data = i.split(":")
-                    temp_user_data[new_user_index_list].update({formated_data[0]:formated_data[1]})
-                else:
-                    temp_user_data.pop(len(temp_user_data) - 1)
-    return temp_user_data
+        unformatted_users = f.readline().split(";")
+        for formatted_users in unformatted_users:
+            if formatted_users != '':
+                user_data.append(dict())
+            last_index_of_new_user = len(user_data) - 1
+            for unformatted_datas in formatted_users.split(','):
+                formatted_datas = unformatted_datas.split(':')
+                user_data[last_index_of_new_user].update({formatted_datas[0]: formatted_datas[1]})
+            else:
+                break
 
-def PushCurrentUserData():
-    for user in user_data:
-        with open(file="user_data.txt", mode="w", encoding="utf-8") as f:
-            f.write("")
+def PushCurrentUserData(temp_user_data):
+    ClearUserData()
+    for user in temp_user_data:
         SaveUserData(user)
-    user_data = LoadUserData()
+
+
 # +----------------------------------------------------------------------+
 # +----------------------------------------------------------------------+
 
-user_data = LoadUserData()
+LoadUserData()
 print(user_data)
 symbols_list = [string.octdigits, string.ascii_letters, string.punctuation]
+
 
 def InputQuit(value):
     quit_words = ['QUIT', '404', 'BREAK', 'EXIT', 'LÕPETADA', 'LÕPP', 'КОНЕЦ']
@@ -53,7 +60,7 @@ def InputQuit(value):
     return False
 
 
-def VariableCheck(input_text, false_text, func, find_user_condition=False): 
+def VariableCheck(input_text, false_text, func, find_user_condition=False):
     if find_user_condition:
         find_user = not None
         while find_user is not None:
@@ -78,7 +85,7 @@ def VariableCheck(input_text, false_text, func, find_user_condition=False):
 
 
 def ChangeValueOfUserData(user_id, variable, value):
-    user_data[user_id][variable] = value
+    user_data[int(user_id)][variable] = value
 
 
 def AnswerConverter(answer=None, make_question=True):
@@ -91,6 +98,7 @@ def AnswerConverter(answer=None, make_question=True):
         return False
     else:
         return None
+
 
 def PasswordGeneration():
     password = str()
@@ -113,6 +121,8 @@ def PasswordCheck(password: str):
         maybe_password += str(number)
         if password == maybe_password or password == maybe_password[1:-1]:
             return False, "Keerulisemad salasõnad"
+    if ',' in password or ';' in password :
+        return False, "',' ja ';'"
     return True, 'success'
 
 
@@ -176,8 +186,10 @@ def Registration(name: str, password: str, secret_word: str, email: str):
 def Authorization(name, password):
     user = FindUserByName(name)
     if user is None:
+        print('user')
         return False
     if password != user.get("user_password"):
+        print('password')
         return False
     return user
 
