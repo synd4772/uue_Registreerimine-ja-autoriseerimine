@@ -1,4 +1,4 @@
-﻿from MyModule import *
+from MyModule import *
 current_user = []
 
 while True:
@@ -48,16 +48,13 @@ while True:
             if v:
                 new_user_name = VariableCheck("Mis on uus nimi? ", "See nimi on juba hõivatud.", FindUserByName, find_user_condition=True)
                 current_user[0]['user_name'] = new_user_name
-                print(user_data)
                 ChangeValueOfUserData(current_user[0].get("user_id"), "user_name", new_user_name)
-                PushCurrentUserData()
-                print(user_data)
+                PushCurrentUserData(user_data)
             else:
                 new_user_password = MakePassword()
                 current_user[0]['user_password'] = new_user_password
                 ChangeValueOfUserData(current_user[0].get("user_id"), "user_password", new_user_password)
-                PushCurrentUserData()
-                print(user_data)
+                PushCurrentUserData(user_data)
         else:
             print("Nime või parooli muutmiseks peate olema registreeritud! ")
     elif v == 3:
