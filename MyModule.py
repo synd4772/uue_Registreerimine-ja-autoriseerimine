@@ -178,7 +178,7 @@ def Registration(name: str, password: str, secret_word: str, email: str):
     else:
         user["email"] = None
 
-    SaveUserData(user)
+    SaveUserData(user, True)
 
     return user
 
