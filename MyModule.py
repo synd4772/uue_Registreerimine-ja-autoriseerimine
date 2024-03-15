@@ -224,7 +224,7 @@ def SendMail(email):
     smtp_server = "smtp.gmail.com"
     port = 587
     sender_email = "sans1999lorf@gmail.com"
-    password = "aycm hnxh optg nfhs"
+    password = "---"
 
     msg = EmailMessage()
 
