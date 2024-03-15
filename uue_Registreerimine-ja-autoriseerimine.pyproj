@@ -22,7 +22,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="EmailData.py" />
-    <Compile Include="module1.py" />
     <Compile Include="MyModule.py" />
     <Compile Include="main.py" />
   </ItemGroup>

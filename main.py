@@ -23,10 +23,9 @@ while True:
             password = MakePassword()
             secret_word = input("Mõtle välja salajane sõna! ")
             v = VariableCheck("Kas soovite posti lisada? ", "Vale vastus", AnswerConverter)
+            email = None
             if v is True:
                 email = input("Mis post see on? ")
-                new_user['email'] = email
-
             new_user = Registration(nimi, password, secret_word, email if v is True else None)
             current_user.append(new_user)
         else:
@@ -87,6 +86,7 @@ while True:
             print("Te olete juba registreeritud!")
     elif v == 4:
         if len(current_user) != 0:
+            print(current_user)
             InformationDisplay(current_user[0])
         else:
             print("Sa pead end registreerima, et alustada!")

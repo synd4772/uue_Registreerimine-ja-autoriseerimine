@@ -28,16 +28,20 @@ def SaveUserData(user, save_locally = False):
 
 def LoadUserData():
     with open(file="user_data.txt", mode="r+", encoding="utf-8") as f:
-        unformatted_users = f.readline().split(";")
-        for formatted_users in unformatted_users:
-            if formatted_users != '':
-                user_data.append(dict())
-            last_index_of_new_user = len(user_data) - 1
-            for unformatted_datas in formatted_users.split(','):
-                formatted_datas = unformatted_datas.split(':')
-                user_data[last_index_of_new_user].update({formatted_datas[0]: formatted_datas[1]})
-            else:
-                break
+        line = f.readline()
+        if len(line) > 0:
+            unformatted_users = line.split(";")
+            for formatted_users in unformatted_users:
+                if formatted_users != '':
+                    user_data.append(dict())    
+                    if len(user_data) == 0:
+                        user_data.append(dict())
+                    last_index_of_new_user = len(user_data) - 1 
+                    for unformatted_datas in formatted_users.split(','):
+                        formatted_datas = unformatted_datas.split(':')
+                        user_data[last_index_of_new_user].update({formatted_datas[0]: formatted_datas[1]})
+                else:
+                    break
 
 def PushCurrentUserData(temp_user_data):
     ClearUserData()
@@ -88,7 +92,7 @@ def ChangeValueOfUserData(user_id, variable, value):
     user_data[int(user_id)][variable] = value
 
 
-def AnswerConverter(answer=None, make_question=True):
+def AnswerConverter(answer = None):
     t_ans = ['JAH', '1', 'YES', 'ДА']
     f_ans = ['EI', '0', 'NO', 'НЕТ']
 
@@ -249,5 +253,5 @@ def SendMail(email):
 def InformationDisplay(user):
     print("+-------------------------+")
     print(
-        f"Nimi - '{user.get('user_name')}'\nPassword - '{user.get('user_password')}'\nSecret word - '{user.get('secret_word')}'\n{'Email - ' + user.get('email') if 'email' in user else ''}")
+        f"Nimi - '{user.get('user_name')}'\nPassword - '{user.get('user_password')}'\nSecret word - '{user.get('secret_word')}'\n{'Email - ' + str(user.get('email'))}")
     print("+-------------------------+\n")
